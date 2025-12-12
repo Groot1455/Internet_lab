@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Internet Programming Lab</title>
+  <style>
+    html,body{height:100%; margin:0; font-family:Arial;}
+    .container{display:flex; height:100vh;}
+    .editor-pane{width:50%; display:flex; flex-direction:column; border-right:1px solid #ccc;}
+    .toolbar{padding:10px; background:#f1f1f1; display:flex; gap:10px;}
+    .editor{flex:1;}
+    .output-pane{width:50%; display:flex; flex-direction:column;}
+    iframe{flex:1; border:0;}
+    button{padding:6px 12px;}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.11.2/ace.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="editor-pane">
+    <div class="toolbar">
+      <strong>Editor</strong>
+      <button onclick="runCode()">Run</button>
+      <button onclick="loadExample()">Load Sample</button>
+    </div>
+    <div id="editor" class="editor"></div>
+  </div>
+
+  <div class="output-pane">
+    <div class="toolbar"><strong>Output</strong></div>
+    <iframe id="output"></iframe>
+  </div>
+</div>
+
+<script>
+  var editor = ace.edit("editor", {
+    mode: "ace/mode/html",
+    theme: "ace/theme/chrome",
+    fontSize: "14px"
+  });
+
+  function runCode() {
+    let code = editor.getValue();
+    document.getElementById("output").srcdoc = code;
+  }
+
+  function loadExample() {
+    editor.setValue(`<!DOCTYPE html>
+<html>
+<body>
+<h1>Hello Internet Programming Lab</h1>
+<p>This is your first experiment.</p>
+
+<script>
+document.body.style.background = "#e8f5e9";
+alert("Experiment running!");
+</script>
+
+</body>
+</html>`);
+  }
+
+  loadExample();
+  runCode();
+</script>
+
+</body>
+</html>
