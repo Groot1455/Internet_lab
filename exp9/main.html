@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form Validation using Regular Expressions</title>
+
+<style>
+body {
+  font-family: Arial;
+  background-color: #f0f0f0;
+}
+table {
+  margin: auto;
+}
+.errText {
+  color: red;
+  font-size: 14px;
+}
+.box {
+  width: 500px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+</style>
+
+<script>
+function validateForm(event) {
+  event.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let age = document.getElementById("age").value;
+  let mobile = document.getElementById("mobile").value;
+  let gender = document.querySelector('input[name="gender"]:checked').value;
+
+  let err = false;
+
+  // Regex patterns (same as PHP)
+  let nameRegex = /^[A-Za-z ]+$/;
+  let ageRegex = /^\d{1,2}$/;
+  let mobileRegex = /^\d{3}-\d{7}$/;
+
+  document.getElementById("errname").innerHTML = "";
+  document.getElementById("errage").innerHTML = "";
+  document.getElementById("errmobile").innerHTML = "";
+
+  if (!nameRegex.test(name)) {
+    document.getElementById("errname").innerHTML =
+      "Please enter your full name";
+    err = true;
+  }
+
+  if (!ageRegex.test(age)) {
+    document.getElementById("errage").innerHTML =
+      "Age must be maximum 2 digits";
+    err = true;
+  }
+
+  if (!mobileRegex.test(mobile)) {
+    document.getElementById("errmobile").innerHTML =
+      "Mobile must be in format: 050-0000000";
+    err = true;
+  }
+
+  if (!err) {
+    // SIMULATED DATABASE
+    let record = {
+      name: name,
+      age: age,
+      gender: gender,
+      mobile: mobile
+    };
+
+    localStorage.setItem(name, JSON.stringify(record));
+
+    document.getElementById("result").innerHTML =
+      "<h3>Your information has been received</h3>";
+  }
+}
+</script>
+</head>
+
+<body>
+
+<div class="box">
+<h2 align="center">Form Validation using Regular Expressions</h2>
+
+<form onsubmit="validateForm(event)">
+<table width="100%">
+<tr>
+<td>Full Name</td>
+<td><input type="text" id="name"></td>
+<td><span class="errText" id="errname"></span></td>
+</tr>
+
+<tr>
+<td>Age</td>
+<td><input type="text" id="age"></td>
+<td><span class="errText" id="errage"></span></td>
+</tr>
+
+<tr>
+<td>Gender</td>
+<td>
+<input type="radio" name="gender" value="Male" checked> Male
+<input type="radio" name="gender" value="Female"> Female
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Mobile</td>
+<td><input type="text" id="mobile"></td>
+<td><span class="errText" id="errmobile"></span></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<input type="submit" value="Submit">
+<input type="reset" value="Reset">
+</td>
+</tr>
+</table>
+</form>
+
+<div id="result" align="center"></div>
+</div>
+
+</body>
+</html>
