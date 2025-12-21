@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Session Tracking using Hidden Form Fields</title>
+
+<style>
+body {
+  font-family: Arial;
+  background-color: #f0f0f0;
+}
+.box {
+  width: 450px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+</style>
+
+<script>
+// SIMULATES FirstServlet
+function firstServlet(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("userName").value;
+  if (name === "") {
+    alert("Enter name");
+    return;
+  }
+
+  document.getElementById("content").innerHTML = `
+    <p><b>Welcome ${name}</b></p>
+
+    <form onsubmit="secondServlet(event)">
+      <input type="hidden" id="uname" value="${name}">
+      <input type="submit" value="go">
+    </form>
+  `;
+}
+
+// SIMULATES SecondServlet
+function secondServlet(event) {
+  event.preventDefault();
+
+  const uname = document.getElementById("uname").value;
+
+  document.getElementById("content").innerHTML =
+    "<p><b>Hello " + uname + "</b></p>";
+}
+</script>
+</head>
+
+<body>
+
+<div class="box">
+  <h3>Session Tracking using Hidden Form Fields</h3>
+
+  <div id="content">
+    <form onsubmit="firstServlet(event)">
+      Name:
+      <input type="text" id="userName"><br><br>
+      <input type="submit" value="go">
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
