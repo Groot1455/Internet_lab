@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AJAX CD Catalogue</title>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>The XMLHttpRequest Object</h1>
+
+<button type="button" onclick="loadDoc()">Get my CD collection</button>
+
+<br><br>
+
+<table id="demo"></table>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      displayData(this);
+    }
+  };
+
+  xhttp.open("GET", "cd_catalog.xml", true);
+  xhttp.send();
+}
+
+function displayData(xml) {
+  var xmlDoc = xml.responseXML;
+  var table = "<tr><th>Artist</th><th>Title</th></tr>";
+  var cds = xmlDoc.getElementsByTagName("CD");
+
+  for (var i = 0; i < cds.length; i++) {
+    table += "<tr><td>" +
+      cds[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      cds[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+      "</td></tr>";
+  }
+
+  document.getElementById("demo").innerHTML = table;
+}
+</script>
+
+</body>
+</html>
