@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Session Tracking (Simulated)</title>
+<style>
+body {
+  font-family: Arial;
+  background-color: #f0f0f0;
+}
+.box {
+  width: 450px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+</style>
+
+<script>
+function trackSession() {
+  // SESSION-SCOPE (like HttpSession)
+  let sessionCount = sessionStorage.getItem("sessionHits");
+  if (sessionCount === null) {
+    sessionCount = 1;
+  } else {
+    sessionCount = parseInt(sessionCount) + 1;
+  }
+  sessionStorage.setItem("sessionHits", sessionCount);
+
+  // APPLICATION-SCOPE (persistent)
+  let totalCount = localStorage.getItem("totalHits");
+  if (totalCount === null) {
+    totalCount = 1;
+  } else {
+    totalCount = parseInt(totalCount) + 1;
+  }
+  localStorage.setItem("totalHits", totalCount);
+
+  document.getElementById("session").innerText = sessionCount;
+  document.getElementById("total").innerText = totalCount;
+}
+</script>
+</head>
+
+<body onload="trackSession()">
+
+<div class="box">
+  <h2>Session Tracking Using JavaScript</h2>
+  <hr>
+
+  <p><b>Session Hit Count:</b></p>
+  <h1 id="session"></h1>
+
+  <p><b>Total Hit Count:</b></p>
+  <h1 id="total"></h1>
+
+  <p><i>(Refresh the page to see hit count change)</i></p>
+</div>
+
+</body>
+</html>
