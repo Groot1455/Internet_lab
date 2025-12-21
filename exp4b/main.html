@@ -1,61 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Session Tracking (Simulated)</title>
+<title>Hit Count Example</title>
 <style>
 body {
   font-family: Arial;
   background-color: #f0f0f0;
 }
 .box {
-  width: 450px;
+  width: 550px;
   margin: auto;
   background: white;
   padding: 20px;
-  border-radius: 5px;
-  text-align: center;
+  border-radius: 6px;
 }
 </style>
 
 <script>
-function trackSession() {
-  // SESSION-SCOPE (like HttpSession)
-  let sessionCount = sessionStorage.getItem("sessionHits");
-  if (sessionCount === null) {
-    sessionCount = 1;
-  } else {
-    sessionCount = parseInt(sessionCount) + 1;
+function getSessionId() {
+  let sid = sessionStorage.getItem("SESSION_ID");
+  if (!sid) {
+    sid = "SID-" + Math.random().toString(36).substring(2, 10);
+    sessionStorage.setItem("SESSION_ID", sid);
   }
-  sessionStorage.setItem("sessionHits", sessionCount);
+  return sid;
+}
 
-  // APPLICATION-SCOPE (persistent)
-  let totalCount = localStorage.getItem("totalHits");
-  if (totalCount === null) {
-    totalCount = 1;
-  } else {
-    totalCount = parseInt(totalCount) + 1;
+function hitCounter() {
+  // SESSION ID
+  const sessionId = getSessionId();
+
+  // CREATION TIME
+  let creationTime = sessionStorage.getItem("CREATION_TIME");
+  if (!creationTime) {
+    creationTime = new Date().toString();
+    sessionStorage.setItem("CREATION_TIME", creationTime);
   }
-  localStorage.setItem("totalHits", totalCount);
 
-  document.getElementById("session").innerText = sessionCount;
-  document.getElementById("total").innerText = totalCount;
+  // LAST ACCESS TIME
+  const lastAccess = new Date().toString();
+  sessionStorage.setItem("LAST_ACCESS", lastAccess);
+
+  // HIT COUNT
+  let hitCount = sessionStorage.getItem("HIT_COUNT");
+  if (!hitCount) {
+    hitCount = 1;
+  } else {
+    hitCount = parseInt(hitCount) + 1;
+  }
+  sessionStorage.setItem("HIT_COUNT", hitCount);
+
+  // DISPLAY (SERVLET-LIKE OUTPUT)
+  document.getElementById("out").innerHTML =
+    "Your Session ID: " + sessionId +
+    "<br>Session Creation Time: " + creationTime +
+    "<br>Time of Last Access: " + lastAccess +
+    "<br>Latest Hit Count: " + hitCount;
 }
 </script>
 </head>
 
-<body onload="trackSession()">
+<body>
 
 <div class="box">
-  <h2>Session Tracking Using JavaScript</h2>
-  <hr>
+  <h3>Hit Count Example with HttpSession (Simulated)</h3>
 
-  <p><b>Session Hit Count:</b></p>
-  <h1 id="session"></h1>
+  <form onsubmit="event.preventDefault(); hitCounter();">
+    Click for Hit Count
+    <input type="submit" value="GET HITS">
+  </form>
 
-  <p><b>Total Hit Count:</b></p>
-  <h1 id="total"></h1>
-
-  <p><i>(Refresh the page to see hit count change)</i></p>
+  <br>
+  <div id="out"></div>
 </div>
 
 </body>
