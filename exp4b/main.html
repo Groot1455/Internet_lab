@@ -52,8 +52,7 @@ function hitCounter() {
 
   // DISPLAY (SERVLET-LIKE OUTPUT)
   document.getElementById("out").innerHTML =
-    "Your Session ID: " + sessionId +
-    "<br>Session Creation Time: " + creationTime +
+    "Session Creation Time: " + creationTime +
     "<br>Time of Last Access: " + lastAccess +
     "<br>Latest Hit Count: " + hitCount;
 }
@@ -63,7 +62,7 @@ function hitCounter() {
 <body>
 
 <div class="box">
-  <h3>Hit Count Example with HttpSession (Simulated)</h3>
+  <h3>Hit Count with HttpSession</h3>
 
   <form onsubmit="event.preventDefault(); hitCounter();">
     Click for Hit Count
