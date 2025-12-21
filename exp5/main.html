@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Online Examination – Three Tier Simulation</title>
+
+<style>
+body {
+  font-family: Arial;
+  background-color: pink;
+}
+.box {
+  width: 650px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+</style>
+
+<script>
+function submitExam(event) {
+  event.preventDefault();
+
+  const seat = document.getElementById("seat").value;
+  const name = document.getElementById("name").value;
+
+  if (seat === "" || name === "") {
+    alert("Enter Seat Number and Name");
+    return;
+  }
+
+  let total = 0;
+
+  // ANSWER LOGIC (same as JSP)
+  if (document.querySelector('input[name="group1"]:checked').value === "True") total += 2;
+  if (document.querySelector('input[name="group2"]:checked').value === "False") total += 2;
+  if (document.querySelector('input[name="group3"]:checked').value === "False") total += 2;
+  if (document.querySelector('input[name="group4"]:checked').value === "True") total += 2;
+  if (document.querySelector('input[name="group5"]:checked').value === "False") total += 2;
+
+  // SIMULATED DATABASE (Tier 3)
+  localStorage.setItem(seat, JSON.stringify({
+    name: name,
+    marks: total
+  }));
+
+  // OUTPUT (same as server response)
+  document.body.innerHTML = `
+    <body bgcolor="pink">
+      <center>
+        <h2>Online Examination Result</h2>
+        <table border="1">
+          <tr><th>Seat No</th><td>${seat}</td></tr>
+          <tr><th>Name</th><td>${name}</td></tr>
+          <tr><th>Total Marks</th><td>${total}</td></tr>
+        </table>
+      </center>
+    </body>
+  `;
+}
+</script>
+</head>
+
+<body>
+
+<div class="box">
+<center><h1>ONLINE EXAMINATION</h1></center>
+<hr>
+
+<form onsubmit="submitExam(event)">
+Seat Number:
+<input type="text" id="seat"><br><br>
+
+Name:
+<input type="text" id="name"><br><br>
+
+<b>Total Marks: 10 (Each question carries equal marks)</b>
+<hr>
+
+<b>1. Apache is an open source web server.</b><br>
+<input type="radio" name="group1" value="True" required>True
+<input type="radio" name="group1" value="False">False<br><br>
+
+<b>2. In Modern PC there is no cache memory.</b><br>
+<input type="radio" name="group2" value="True" required>True
+<input type="radio" name="group2" value="False">False<br><br>
+
+<b>3. Tim Berners Lee is the originator of Java.</b><br>
+<input type="radio" name="group3" value="True" required>True
+<input type="radio" name="group3" value="False">False<br><br>
+
+<b>4. JPG is not a video file extension.</b><br>
+<input type="radio" name="group4" value="True" required>True
+<input type="radio" name="group4" value="False">False<br><br>
+
+<b>5. HTTP is a stateful protocol.</b><br>
+<input type="radio" name="group5" value="True" required>True
+<input type="radio" name="group5" value="False">False<br><br>
+
+<center>
+<input type="submit" value="Submit">
+<input type="reset" value="Clear">
+</center>
+</form>
+</div>
+
+</body>
+</html>
