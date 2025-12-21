@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Email Validation</title>
+
+<style>
+.err { color: red; }
+.ok { color: green; }
+</style>
+
+<script>
+function validateEmail(event) {
+  event.preventDefault();
+
+  let email = document.getElementById("email").value;
+  let msg = document.getElementById("msg");
+
+  // SAME REGEX AS PHP
+  let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (!emailRegex.test(email)) {
+    msg.innerHTML = "Invalid Email ID";
+    msg.className = "err";
+  } else {
+    msg.innerHTML = "Valid Email ID";
+    msg.className = "ok";
+  }
+}
+</script>
+</head>
+
+<body>
+
+<h2>Email Validation using Regular Expression</h2>
+
+<form onsubmit="validateEmail(event)">
+Email:
+<input type="text" id="email">
+<br><br>
+<input type="submit" value="Validate">
+</form>
+
+<p id="msg"></p>
+
+</body>
+</html>
